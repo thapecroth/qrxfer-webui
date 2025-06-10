@@ -1,0 +1,8 @@
+name = "qrxfer-web"
+compatibility_date = "2024-01-15"
+
+[env.production]
+name = "qrxfer-web"
+
+# Cloudflare Pages configuration
+pages_build_output_dir = "dist"
