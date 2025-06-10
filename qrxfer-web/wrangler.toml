@@ -1,8 +1,39 @@
 name = "qrxfer-web"
 compatibility_date = "2024-01-15"
 
+# Cloudflare Pages configuration
+pages_build_output_dir = "dist"
+
 [env.production]
 name = "qrxfer-web"
 
-# Cloudflare Pages configuration
-pages_build_output_dir = "dist"
+# SPA routing configuration
+[[env.production.routes]]
+pattern = "/*"
+custom_domain = true
+
+# Build configuration for Cloudflare Pages
+[build]
+command = "npm run build"
+cwd = "."
+
+# Headers for better performance and security
+[[headers]]
+for = "/*.css"
+[headers.values]
+"Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.js"
+[headers.values]
+"Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/*.svg"
+[headers.values]
+"Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/index.html"
+[headers.values]
+"Cache-Control" = "public, max-age=0, must-revalidate"

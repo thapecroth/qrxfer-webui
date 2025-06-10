@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "deploy": "npm run lint && npm run build && wrangler pages deploy dist --project-name qrxfer"
   },
   "dependencies": {
     "@types/node": "^22.15.30",
