@@ -31,6 +31,7 @@ const Receiver: React.FC = () => {
   const [permissionState, setPermissionState] = useState<'prompt' | 'granted' | 'denied'>('prompt');
   const [retryCount, setRetryCount] = useState<number>(0);
   const [lastError, setLastError] = useState<string>('');
+  const [qrCodeDetected, setQrCodeDetected] = useState<boolean>(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -75,6 +76,7 @@ const Receiver: React.FC = () => {
     setCameraReady(false);
     setIsScanning(false);
     setRetryCount(0);
+    setQrCodeDetected(false);
     
     if (status === TransferStatus.RECEIVING) {
       setStatus(TransferStatus.IDLE);
@@ -396,6 +398,8 @@ const Receiver: React.FC = () => {
     const message = QRProtocol.parseMessage(data);
     if (!message) return;
 
+    setQrCodeDetected(true);
+    
     try {
       if (data === QRProtocol.MESSAGE_BEGIN) {
         resetReceiver();
@@ -525,6 +529,7 @@ const Receiver: React.FC = () => {
     isReceivingHeader.current = false;
     setErrorMessage('');
     setStatus(TransferStatus.IDLE);
+    setQrCodeDetected(false);
   };
 
   const clearData = () => {
@@ -705,7 +710,7 @@ const Receiver: React.FC = () => {
                   <div className="w-32 sm:w-48 h-32 sm:h-48 border-2 sm:border-4 border-emerald-400 rounded-xl sm:rounded-2xl animate-pulse opacity-70"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-emerald-300 font-semibold bg-black/50 rounded-lg px-2 sm:px-3 py-1 text-xs sm:text-sm">
-                      📱 Scanning for QR codes...
+                      {qrCodeDetected ? '✅ QR code detected! Receiving...' : '📱 Scanning for QR codes...'}
                     </div>
                   </div>
                   
